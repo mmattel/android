@@ -7,7 +7,7 @@
  * @author David González Verdugo
  * @author Christian Schabesberger
  * Copyright (C) 2011  Bartek Przybylski
- * Copyright (C) 2018 ownCloud GmbH.
+ * Copyright (C) 2019 ownCloud GmbH.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -132,6 +132,8 @@ public class FileContentProvider extends ContentProvider {
         mShareProjectionMap.put(ProviderTableMeta.OCSHARES_TOKEN, ProviderTableMeta.OCSHARES_TOKEN);
         mShareProjectionMap.put(ProviderTableMeta.OCSHARES_SHARE_WITH_DISPLAY_NAME,
                 ProviderTableMeta.OCSHARES_SHARE_WITH_DISPLAY_NAME);
+        mShareProjectionMap.put(ProviderTableMeta.OCSHARES_SHARE_WITH_ADDITIONAL_INFO,
+                ProviderTableMeta.OCSHARES_SHARE_WITH_ADDITIONAL_INFO);
         mShareProjectionMap.put(ProviderTableMeta.OCSHARES_IS_DIRECTORY,
                 ProviderTableMeta.OCSHARES_IS_DIRECTORY);
         mShareProjectionMap.put(ProviderTableMeta.OCSHARES_USER_ID, ProviderTableMeta.OCSHARES_USER_ID);
@@ -1067,6 +1069,20 @@ public class FileContentProvider extends ContentProvider {
                 }
             }
 
+            if (oldVersion < 25 && newVersion >= 25) {
+                Log_OC.i("SQL", "Entering in the #25 ADD in onUpgrade");
+                db.beginTransaction();
+                try {
+                    db.execSQL("ALTER TABLE " + ProviderTableMeta.OCSHARES_TABLE_NAME +
+                            " ADD COLUMN " + ProviderTableMeta.OCSHARES_SHARE_WITH_ADDITIONAL_INFO + " TEXT " +
+                            " DEFAULT NULL");
+                    db.setTransactionSuccessful();
+                    upgraded = true;
+                } finally {
+                    db.endTransaction();
+                }
+            }
+
             if (!upgraded) {
                 Log_OC.i("SQL", "OUT of the ADD in onUpgrade; oldVersion == " + oldVersion +
                         ", newVersion == " + newVersion);
@@ -1118,6 +1134,7 @@ public class FileContentProvider extends ContentProvider {
                 + ProviderTableMeta.OCSHARES_EXPIRATION_DATE + " INTEGER, "
                 + ProviderTableMeta.OCSHARES_TOKEN + " TEXT, "
                 + ProviderTableMeta.OCSHARES_SHARE_WITH_DISPLAY_NAME + " TEXT, "
+                + ProviderTableMeta.OCSHARES_SHARE_WITH_ADDITIONAL_INFO + " TEXT, "
                 + ProviderTableMeta.OCSHARES_IS_DIRECTORY + " INTEGER, "  // boolean
                 + ProviderTableMeta.OCSHARES_USER_ID + " INTEGER, "
                 + ProviderTableMeta.OCSHARES_ID_REMOTE_SHARED + " INTEGER,"

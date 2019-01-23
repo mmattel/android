@@ -6,7 +6,7 @@
  *   @author masensio
  *   @author David González Verdugo
  *   Copyright (C) 2011  Bartek Przybylski
- *   Copyright (C) 2018 ownCloud GmbH.
+ *   Copyright (C) 2019 ownCloud GmbH.
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2,
@@ -34,7 +34,7 @@ import com.owncloud.android.MainApp;
 public class ProviderMeta {
 
     public static final String DB_NAME = "filelist";
-    public static final int DB_VERSION = 24;
+    public static final int DB_VERSION = 25;
 
     private ProviderMeta() {
     }
@@ -110,6 +110,7 @@ public class ProviderMeta {
         public static final String OCSHARES_EXPIRATION_DATE = "expiration_date";
         public static final String OCSHARES_TOKEN = "token";
         public static final String OCSHARES_SHARE_WITH_DISPLAY_NAME = "shared_with_display_name";
+        public static final String OCSHARES_SHARE_WITH_ADDITIONAL_INFO = "share_with_additional_info";
         public static final String OCSHARES_IS_DIRECTORY = "is_directory";
         public static final String OCSHARES_USER_ID = "user_id";
         public static final String OCSHARES_ID_REMOTE_SHARED = "id_remote_shared";
